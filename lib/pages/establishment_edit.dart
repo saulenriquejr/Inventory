@@ -18,7 +18,7 @@ class _EstablishmentEditPage extends State<EstablishmentEditPage> {
     return EnsureVisibleWhenFocused(
       focusNode: _nameFocusNode,
       child: TextFormField(
-        //style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         focusNode: _nameFocusNode,
         decoration: InputDecoration(
             labelText: 'Nombre del lugar',
@@ -40,7 +40,7 @@ class _EstablishmentEditPage extends State<EstablishmentEditPage> {
     return EnsureVisibleWhenFocused(
       focusNode: _addressFocusNode,
       child: TextFormField(
-        //style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         focusNode: _addressFocusNode,
         decoration: InputDecoration(
             labelText: 'Dirección',
