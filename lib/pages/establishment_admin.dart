@@ -1,3 +1,4 @@
+import 'package:Inventarios/pages/establishment_edit.dart';
 import 'package:Inventarios/pages/establishment_list.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +28,8 @@ class EstablishmentAdminPage extends StatelessWidget {
         appBar: topAppBar,
         body: TabBarView(
           children: <Widget>[
-            EstablishmentListPage()
+            EstablishmentListPage(),
+            EstablishmentEditPage()
           ],
         ),
         bottomNavigationBar: TabBar(

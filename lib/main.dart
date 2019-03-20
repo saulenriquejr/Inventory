@@ -1,4 +1,3 @@
-import 'package:Inventarios/pages/establishment_list.dart';
 import 'package:flutter/material.dart';
 
 import './pages/establishment_admin.dart';
@@ -18,7 +17,7 @@ class _MyAppState extends State<App> {
     return MaterialApp(
       theme: ThemeData(
         primaryColor: Color.fromRGBO(58, 66, 86, 1.0),
-        accentColor: Color.fromRGBO(14, 177, 210, 1.0)      
+        accentColor: Color.fromRGBO(52, 138, 167, 1.0)
       ),
       routes: {
         '/': (BuildContext context) => EstablishmentAdminPage(title: 'Establecimientos')

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../widgets/tile_default.dart';
-import '../widgets/navigation_bar.dart';
 
 class EstablishmentListPage extends StatefulWidget {
 
