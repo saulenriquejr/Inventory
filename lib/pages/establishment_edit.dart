@@ -1,6 +1,9 @@
+import 'package:Inventarios/scoped_models/main.dart';
+import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+
 import 'package:Inventarios/models/establishment.dart';
 import 'package:Inventarios/widgets/helpers/ensure_visible.dart';
-import 'package:flutter/material.dart';
 
 class EstablishmentEditPage extends StatefulWidget {
   @override
@@ -8,13 +11,13 @@ class EstablishmentEditPage extends StatefulWidget {
 }
 
 class _EstablishmentEditPage extends State<EstablishmentEditPage> {
-  Establishment _formData;
+  Establishment _formData = new Establishment();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final _nameFocusNode = FocusNode();
   final _addressFocusNode = FocusNode();
 
-  Widget _buildNameTextField(BuildContext context) {
+  Widget _buildNameTextField() {
     return EnsureVisibleWhenFocused(
       focusNode: _nameFocusNode,
       child: TextFormField(
@@ -36,7 +39,7 @@ class _EstablishmentEditPage extends State<EstablishmentEditPage> {
     );
   }
 
-  Widget _buildAddressTextField(BuildContext context) {
+  Widget _buildAddressTextField() {
     return EnsureVisibleWhenFocused(
       focusNode: _addressFocusNode,
       child: TextFormField(
@@ -58,10 +61,26 @@ class _EstablishmentEditPage extends State<EstablishmentEditPage> {
     );
   }
 
-  void _submitForm() {
+  void _submitForm(Function addEstablishment) {
     if (!_formKey.currentState.validate()) {
       return;
     }
+    _formKey.currentState.save();
+
+    addEstablishment(_formData.name, _formData.address);
+  }
+
+  Widget _buildSubmitButton() {
+    return ScopedModelDescendant<MainModel>(
+      builder: (BuildContext context, Widget child, MainModel model) {
+        return RaisedButton(
+          child: Text('Guardar'),
+          textColor: Colors.white,
+          color: Theme.of(context).accentColor,
+          onPressed: () => _submitForm(model.addEstablishment),
+        );
+      },
+    );
   }
 
   Widget _buildPageContent(BuildContext context) {
@@ -80,17 +99,12 @@ class _EstablishmentEditPage extends State<EstablishmentEditPage> {
           child: ListView(
             padding: EdgeInsets.symmetric(horizontal: targetPadding / 2),
             children: <Widget>[
-              _buildNameTextField(context),
-              _buildAddressTextField(context),
+              _buildNameTextField(),
+              _buildAddressTextField(),
               SizedBox(
                 height: 10.0,
               ),
-              RaisedButton(
-                child: Text('Guardar'),
-                textColor: Colors.white,
-                color: Theme.of(context).accentColor,
-                onPressed: () => _submitForm(),
-              )
+              _buildSubmitButton()
             ],
           ),
         ),
@@ -100,8 +114,11 @@ class _EstablishmentEditPage extends State<EstablishmentEditPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Theme.of(context).primaryColor,
-        body: _buildPageContent(context));
+    return ScopedModelDescendant<MainModel>(
+        builder: (BuildContext context, Widget child, MainModel model) {
+      return Scaffold(
+          backgroundColor: Theme.of(context).primaryColor,
+          body: _buildPageContent(context));
+    });
   }
 }
