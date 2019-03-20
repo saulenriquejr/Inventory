@@ -28,7 +28,7 @@ class TileDefault extends StatelessWidget {
           ],
         ),
         trailing:
-            Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0));
+            Icon(Icons.edit, color: Colors.white, size: 30.0));
   }
 
 }

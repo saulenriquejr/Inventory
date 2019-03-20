@@ -49,11 +49,11 @@ class _EstablishmentEditPage extends State<EstablishmentEditPage> {
             labelText: 'Dirección',
             labelStyle:
                 TextStyle(color: Colors.white, fontWeight: FontWeight.normal)),
-        validator: (String value) {
-          if (value.isEmpty || value.length < 5) {
-            return 'Debe tener al menos 5 letras';
-          }
-        },
+        // validator: (String value) {
+        //   if (value.isEmpty || value.length < 5) {
+        //     return 'Debe tener al menos 5 letras';
+        //   }
+        // },
         onSaved: (String value) {
           _formData.address = value;
         },
@@ -68,6 +68,8 @@ class _EstablishmentEditPage extends State<EstablishmentEditPage> {
     _formKey.currentState.save();
 
     addEstablishment(_formData.name, _formData.address);
+
+    Navigator.pushReplacementNamed(context, '/');
   }
 
   Widget _buildSubmitButton() {
