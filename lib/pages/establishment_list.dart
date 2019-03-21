@@ -22,6 +22,7 @@ class EstablishmentListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
+
       final buildBody = Container(
         child: ListView.builder(
           scrollDirection: Axis.vertical,
@@ -32,8 +33,6 @@ class EstablishmentListPage extends StatelessWidget {
           },
         ),
       );
-
-      
 
       return Scaffold(
         backgroundColor: Theme.of(context).primaryColor,

@@ -10,35 +10,48 @@ class EstablishmentAdminPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final topAppBar = AppBar(
-      elevation: 0.1,
-      backgroundColor: Theme.of(context).primaryColor,
-      title: Text(title),
-      actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.list),
-          onPressed: () {},
-        )
-      ],
-    );
+        elevation: 0.1,
+        backgroundColor: Theme.of(context).primaryColor,
+        title: Text(title));
+
+    Widget _buildDrawer(BuildContext context) {
+      return Drawer(
+        child: Column(
+          children: <Widget>[
+            AppBar(
+              automaticallyImplyLeading: false,
+              title: Text('Choose'),
+            ),
+            ListTile(
+              leading: Icon(Icons.shop),
+              title: Text('Establecimientos'),
+              onTap: () {
+                Navigator.pushReplacementNamed(context, '/establishments');
+              },
+            )
+          ],
+        ),
+      );
+    }
 
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        drawer: _buildDrawer(context),
         backgroundColor: Theme.of(context).primaryColor,
         appBar: topAppBar,
         body: TabBarView(
-          children: <Widget>[
-            EstablishmentListPage(),
-            EstablishmentEditPage()
-          ],
+          children: <Widget>[EstablishmentListPage(), EstablishmentEditPage()],
         ),
         bottomNavigationBar: TabBar(
           tabs: <Widget>[
             Tab(
-              icon: Icon(Icons.home),
+              icon: Icon(Icons.list),
+              text: 'Todos',
             ),
             Tab(
               icon: Icon(Icons.add),
+              text: 'Agregar nuevo',
             )
           ],
         ),
