@@ -23,7 +23,8 @@ class _MyAppState extends State<App> {
               primaryColor: Color.fromRGBO(58, 66, 86, 1.0),
               accentColor: Color.fromRGBO(52, 138, 167, 1.0)),
           routes: {
-            '/establishments': (BuildContext context) => EstablishmentAdminPage(title: 'Establecimientos')
+            '/': (BuildContext context) => EstablishmentAdminPage(title: 'Lugares'),
+            '/establishments': (BuildContext context) => EstablishmentAdminPage(title: 'Lugares')
           },
         ));
   }

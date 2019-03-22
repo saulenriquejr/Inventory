@@ -20,11 +20,11 @@ class EstablishmentAdminPage extends StatelessWidget {
           children: <Widget>[
             AppBar(
               automaticallyImplyLeading: false,
-              title: Text('Choose'),
+              title: Text('Menú'),
             ),
             ListTile(
               leading: Icon(Icons.shop),
-              title: Text('Establecimientos'),
+              title: Text('Lugares'),
               onTap: () {
                 Navigator.pushReplacementNamed(context, '/establishments');
               },

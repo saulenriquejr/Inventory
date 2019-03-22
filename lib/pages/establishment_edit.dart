@@ -1,7 +1,7 @@
-import 'package:Inventarios/scoped_models/main.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
+import 'package:Inventarios/scoped_models/main.dart';
 import 'package:Inventarios/models/establishment.dart';
 import 'package:Inventarios/widgets/helpers/ensure_visible.dart';
 
@@ -17,7 +17,7 @@ class _EstablishmentEditPage extends State<EstablishmentEditPage> {
   final _nameFocusNode = FocusNode();
   final _addressFocusNode = FocusNode();
 
-  Widget _buildNameTextField() {
+  Widget _buildNameTextField(Establishment establishment) {
     return EnsureVisibleWhenFocused(
       focusNode: _nameFocusNode,
       child: TextFormField(
@@ -32,6 +32,7 @@ class _EstablishmentEditPage extends State<EstablishmentEditPage> {
             return 'Debe tener al menos 5 letras';
           }
         },
+        initialValue: establishment == null ? '' : establishment.name,
         onSaved: (String value) {
           _formData.name = value;
         },
@@ -39,21 +40,18 @@ class _EstablishmentEditPage extends State<EstablishmentEditPage> {
     );
   }
 
-  Widget _buildAddressTextField() {
+  Widget _buildAddressTextField(Establishment establishment) {
     return EnsureVisibleWhenFocused(
       focusNode: _addressFocusNode,
       child: TextFormField(
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         focusNode: _addressFocusNode,
         decoration: InputDecoration(
-            labelText: 'Dirección',
-            labelStyle:
-                TextStyle(color: Colors.white, fontWeight: FontWeight.normal)),
-        // validator: (String value) {
-        //   if (value.isEmpty || value.length < 5) {
-        //     return 'Debe tener al menos 5 letras';
-        //   }
-        // },
+          labelText: 'Dirección',
+          labelStyle:
+              TextStyle(color: Colors.white, fontWeight: FontWeight.normal),
+        ),
+        initialValue: establishment == null ? '' : establishment.address,
         onSaved: (String value) {
           _formData.address = value;
         },
@@ -61,15 +59,22 @@ class _EstablishmentEditPage extends State<EstablishmentEditPage> {
     );
   }
 
-  void _submitForm(Function addEstablishment) {
+  void _submitForm(Function addEstablishment, Function updateEstablishment,
+      Function setSelectedEstablishment,
+      [int selEstablishmentIndex]) {
     if (!_formKey.currentState.validate()) {
       return;
     }
     _formKey.currentState.save();
 
-    addEstablishment(_formData.name, _formData.address);
+    if (selEstablishmentIndex == null) {
+      addEstablishment(_formData.name, _formData.address);
+    } else {
+      updateEstablishment(_formData.name, _formData.address);
+    }
 
-    Navigator.pushReplacementNamed(context, '/');
+    Navigator.pushReplacementNamed(context, '/establishments')
+        .then((_) => setSelectedEstablishment(null));
   }
 
   Widget _buildSubmitButton() {
@@ -79,13 +84,17 @@ class _EstablishmentEditPage extends State<EstablishmentEditPage> {
           child: Text('Guardar'),
           textColor: Colors.white,
           color: Theme.of(context).accentColor,
-          onPressed: () => _submitForm(model.addEstablishment),
+          onPressed: () => _submitForm(
+              model.addEstablishment,
+              model.updateEstablishment,
+              model.setSelectedEstablishment,
+              model.selEstablishmentIndex),
         );
       },
     );
   }
 
-  Widget _buildPageContent(BuildContext context) {
+  Widget _buildPageContent(BuildContext context, Establishment establishment) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
     final double targetPadding = deviceWidth - targetWidth;
@@ -101,8 +110,8 @@ class _EstablishmentEditPage extends State<EstablishmentEditPage> {
           child: ListView(
             padding: EdgeInsets.symmetric(horizontal: targetPadding / 2),
             children: <Widget>[
-              _buildNameTextField(),
-              _buildAddressTextField(),
+              _buildNameTextField(establishment),
+              _buildAddressTextField(establishment),
               SizedBox(
                 height: 10.0,
               ),
@@ -118,9 +127,20 @@ class _EstablishmentEditPage extends State<EstablishmentEditPage> {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-      return Scaffold(
-          backgroundColor: Theme.of(context).primaryColor,
-          body: _buildPageContent(context));
+      Widget pageContent =
+          _buildPageContent(context, model.selectedEstablishment);
+      print('selectedEstablishmentIndex: ' +
+          model.selectedEstablishmentIndex.toString());
+
+      return model.selectedEstablishmentIndex == null
+          ? pageContent
+          : Scaffold(
+              appBar: AppBar(
+                title: Text('Editar Lugar'),
+              ),
+              backgroundColor: Theme.of(context).primaryColor,
+              body: pageContent,
+            );
     });
   }
 }
