@@ -3,78 +3,78 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:Inventarios/widgets/helpers/ensure_visible.dart';
 
 import 'package:Inventarios/scoped_models/main.dart';
-import 'package:Inventarios/models/establishment.dart';
+import 'package:Inventarios/models/product.dart';
 
-class EstablishmentEditPage extends StatefulWidget {
+class ProductEditPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _EstablishmentEditPage();
+  State<StatefulWidget> createState() => _ProductEditPage();
 }
 
-class _EstablishmentEditPage extends State<EstablishmentEditPage> {
-  Establishment _formData = new Establishment();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+class _ProductEditPage extends State<ProductEditPage> {
+  Product _productFormData = new Product();
+  final GlobalKey<FormState> _productFormKey = GlobalKey<FormState>();
 
-  final _nameFocusNode = FocusNode();
-  final _addressFocusNode = FocusNode();
+  final _productNameFocusNode = FocusNode();
+  final _productDescriptionFocusNode = FocusNode();
 
-  Widget _buildNameTextField(Establishment establishment) {
+  Widget _buildNameTextField(Product product) {
     return EnsureVisibleWhenFocused(
-      focusNode: _nameFocusNode,
+      focusNode: _productNameFocusNode,
       child: TextFormField(
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        focusNode: _nameFocusNode,
+        focusNode: _productNameFocusNode,
         decoration: InputDecoration(
-            labelText: 'Nombre del lugar',
+            labelText: 'Nombre',
             labelStyle:
                 TextStyle(color: Colors.white, fontWeight: FontWeight.normal)),
         validator: (String value) {
-          if (value.isEmpty || value.length < 5) {
-            return 'Debe tener al menos 5 letras';
+          if (value.isEmpty || value.length < 3) {
+            return 'Debe tener al menos 3 letras';
           }
         },
-        initialValue: establishment == null ? '' : establishment.name,
+        initialValue: product == null ? '' : product.name,
         onSaved: (String value) {
-          _formData.name = value;
+          _productFormData.name = value;
         },
       ),
     );
   }
 
-  Widget _buildAddressTextField(Establishment establishment) {
+  Widget _buildDescripionTextField(Product product) {
     return EnsureVisibleWhenFocused(
-      focusNode: _addressFocusNode,
+      focusNode: _productDescriptionFocusNode,
       child: TextFormField(
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        focusNode: _addressFocusNode,
+        focusNode: _productDescriptionFocusNode,
         decoration: InputDecoration(
-          labelText: 'Dirección',
+          labelText: 'Descripción',
           labelStyle:
               TextStyle(color: Colors.white, fontWeight: FontWeight.normal),
         ),
-        initialValue: establishment == null ? '' : establishment.address,
+        initialValue: product == null ? '' : product.description,
         onSaved: (String value) {
-          _formData.address = value;
+          _productFormData.description = value;
         },
       ),
     );
   }
 
-  void _submitForm(Function addEstablishment, Function updateEstablishment,
-      Function setSelectedEstablishment,
-      [int selEstablishmentIndex]) {
-    if (!_formKey.currentState.validate()) {
+  void _submitForm(
+      Function addProduct, Function updateProduct, Function setSelectedProduct,
+      [int selProductIndex]) {
+    if (!_productFormKey.currentState.validate()) {
       return;
     }
-    _formKey.currentState.save();
+    _productFormKey.currentState.save();
 
-    if (selEstablishmentIndex == null) {
-      addEstablishment(_formData.name, _formData.address);
+    if (selProductIndex == null) {
+      addProduct(_productFormData.name, _productFormData.description, _productFormData.imageUrl);
     } else {
-      updateEstablishment(_formData.name, _formData.address);
+      updateProduct(_productFormData.name, _productFormData.description, _productFormData.imageUrl);
     }
 
-    Navigator.pushReplacementNamed(context, '/establishments')
-        .then((_) => setSelectedEstablishment(null));
+    Navigator.pushReplacementNamed(context, '/products')
+        .then((_) => setSelectedProduct(null));
   }
 
   Widget _buildSubmitButton() {
@@ -84,17 +84,14 @@ class _EstablishmentEditPage extends State<EstablishmentEditPage> {
           child: Text('Guardar'),
           textColor: Colors.white,
           color: Theme.of(context).accentColor,
-          onPressed: () => _submitForm(
-              model.addEstablishment,
-              model.updateEstablishment,
-              model.setSelectedEstablishment,
-              model.selEstablishmentIndex),
+          onPressed: () => _submitForm(model.addProduct, model.updateProduct,
+              model.setSelectedProduct, model.selProductIndex),
         );
       },
     );
   }
 
-  Widget _buildPageContent(BuildContext context, Establishment establishment) {
+  Widget _buildPageContent(BuildContext context, Product product) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
     final double targetPadding = deviceWidth - targetWidth;
@@ -106,12 +103,12 @@ class _EstablishmentEditPage extends State<EstablishmentEditPage> {
       child: Container(
         margin: EdgeInsets.all(10.0),
         child: Form(
-          key: _formKey,
+          key: _productFormKey,
           child: ListView(
             padding: EdgeInsets.symmetric(horizontal: targetPadding / 2),
             children: <Widget>[
-              _buildNameTextField(establishment),
-              _buildAddressTextField(establishment),
+              _buildNameTextField(product),
+              _buildDescripionTextField(product),
               SizedBox(
                 height: 10.0,
               ),
@@ -127,14 +124,13 @@ class _EstablishmentEditPage extends State<EstablishmentEditPage> {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-      Widget pageContent =
-          _buildPageContent(context, model.selectedEstablishment);
+      Widget pageContent = _buildPageContent(context, model.selectedProduct);
 
-      return model.selectedEstablishmentIndex == null
+      return model.selectedProductIndex == null
           ? pageContent
           : Scaffold(
               appBar: AppBar(
-                title: Text('Editar Lugar'),
+                title: Text('Editar Producto'),
               ),
               backgroundColor: Theme.of(context).primaryColor,
               body: pageContent,

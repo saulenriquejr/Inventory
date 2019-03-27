@@ -3,6 +3,7 @@ import 'package:scoped_model/scoped_model.dart';
 
 import './pages/establishment_admin.dart';
 import 'package:Inventarios/scoped_models/main.dart';
+import 'package:Inventarios/pages/product_admin.dart';
 
 void main() => runApp(App());
 
@@ -23,8 +24,9 @@ class _MyAppState extends State<App> {
               primaryColor: Color.fromRGBO(58, 66, 86, 1.0),
               accentColor: Color.fromRGBO(52, 138, 167, 1.0)),
           routes: {
-            '/': (BuildContext context) => EstablishmentAdminPage(title: 'Lugares'),
-            '/establishments': (BuildContext context) => EstablishmentAdminPage(title: 'Lugares')
+            '/': (BuildContext context) => EstablishmentAdminPage(),
+            '/establishments': (BuildContext context) => EstablishmentAdminPage(),
+            '/products': (BuildContext context) => ProductAdminPage()
           },
         ));
   }
