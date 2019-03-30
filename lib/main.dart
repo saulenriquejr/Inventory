@@ -21,11 +21,15 @@ class _MyAppState extends State<App> {
         model: MainModel(),
         child: MaterialApp(
           theme: ThemeData(
-              primaryColor: Color.fromRGBO(58, 66, 86, 1.0),
-              accentColor: Color.fromRGBO(52, 138, 167, 1.0)),
+            brightness: Brightness.light,
+            primarySwatch: Colors.deepOrange,
+            accentColor: Colors.deepPurple,
+            buttonColor: Colors.deepPurple
+          ),
           routes: {
             '/': (BuildContext context) => EstablishmentAdminPage(),
-            '/establishments': (BuildContext context) => EstablishmentAdminPage(),
+            '/establishments': (BuildContext context) =>
+                EstablishmentAdminPage(),
             '/products': (BuildContext context) => ProductAdminPage()
           },
         ));

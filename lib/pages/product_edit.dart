@@ -21,12 +21,10 @@ class _ProductEditPage extends State<ProductEditPage> {
     return EnsureVisibleWhenFocused(
       focusNode: _productNameFocusNode,
       child: TextFormField(
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         focusNode: _productNameFocusNode,
         decoration: InputDecoration(
-            labelText: 'Nombre',
-            labelStyle:
-                TextStyle(color: Colors.white, fontWeight: FontWeight.normal)),
+          labelText: 'Nombre',
+        ),
         validator: (String value) {
           if (value.isEmpty || value.length < 3) {
             return 'Debe tener al menos 3 letras';
@@ -44,12 +42,9 @@ class _ProductEditPage extends State<ProductEditPage> {
     return EnsureVisibleWhenFocused(
       focusNode: _productDescriptionFocusNode,
       child: TextFormField(
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         focusNode: _productDescriptionFocusNode,
         decoration: InputDecoration(
           labelText: 'Descripción',
-          labelStyle:
-              TextStyle(color: Colors.white, fontWeight: FontWeight.normal),
         ),
         initialValue: product == null ? '' : product.description,
         onSaved: (String value) {
@@ -59,22 +54,27 @@ class _ProductEditPage extends State<ProductEditPage> {
     );
   }
 
-  void _submitForm(
-      Function addProduct, Function updateProduct, Function setSelectedProduct,
-      [int selProductIndex]) {
-    if (!_productFormKey.currentState.validate()) {
-      return;
-    }
-    _productFormKey.currentState.save();
+  Widget _buildCategoryField() {
+    List<String> _categories = <String>[
+      'Licores',
+      'Alimentos Empacados',
+      'Gaseosas',
+      'Alimentos No Empacados',
+      'Cigarrillos',
+      'Bebidas Lácteas'
+    ];
 
-    if (selProductIndex == null) {
-      addProduct(_productFormData.name, _productFormData.description, _productFormData.imageUrl);
-    } else {
-      updateProduct(_productFormData.name, _productFormData.description, _productFormData.imageUrl);
-    }
-
-    Navigator.pushReplacementNamed(context, '/products')
-        .then((_) => setSelectedProduct(null));
+    return DropdownButton<String>(
+      hint: Text('Seleccione una categoría'),
+      value: _productFormData.category,
+      items: _categories.map((String value) {
+        return new DropdownMenuItem<String>(
+          value: value,
+          child: new Text(value),
+        );
+      }).toList(),
+      onChanged: changedDropDownItem,
+    );
   }
 
   Widget _buildSubmitButton() {
@@ -89,6 +89,32 @@ class _ProductEditPage extends State<ProductEditPage> {
         );
       },
     );
+  }
+
+  void changedDropDownItem(String selectedCategory) {
+    setState(() {
+      _productFormData.category = selectedCategory;
+    });
+  }
+
+  void _submitForm(
+      Function addProduct, Function updateProduct, Function setSelectedProduct,
+      [int selProductIndex]) {
+    if (!_productFormKey.currentState.validate()) {
+      return;
+    }
+    _productFormKey.currentState.save();
+
+    if (selProductIndex == null) {
+      addProduct(_productFormData.name, _productFormData.description,
+          _productFormData.imageUrl);
+    } else {
+      updateProduct(_productFormData.name, _productFormData.description,
+          _productFormData.imageUrl);
+    }
+
+    Navigator.pushReplacementNamed(context, '/products')
+        .then((_) => setSelectedProduct(null));
   }
 
   Widget _buildPageContent(BuildContext context, Product product) {
@@ -108,11 +134,18 @@ class _ProductEditPage extends State<ProductEditPage> {
             padding: EdgeInsets.symmetric(horizontal: targetPadding / 2),
             children: <Widget>[
               _buildNameTextField(product),
+              SizedBox(
+                height: 10.0,
+              ),
               _buildDescripionTextField(product),
               SizedBox(
                 height: 10.0,
               ),
-              _buildSubmitButton()
+              _buildCategoryField(),
+              SizedBox(
+                height: 10.0,
+              ),
+              _buildSubmitButton(),
             ],
           ),
         ),

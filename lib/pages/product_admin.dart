@@ -8,30 +8,34 @@ class ProductAdminPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final topAppBar = AppBar(
-        elevation: 0.1,
-        backgroundColor: Theme.of(context).primaryColor,
-        title: Text('Productos'));
+      elevation: 0.1,
+      title: Text('Productos'),
+    );
 
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         drawer: SideMenu(),
-        backgroundColor: Theme.of(context).primaryColor,
         appBar: topAppBar,
         body: TabBarView(
           children: <Widget>[ProductListPage(), ProductEditPage()],
         ),
-        bottomNavigationBar: TabBar(
-          tabs: <Widget>[
-            Tab(
-              icon: Icon(Icons.list),
-              text: 'Todos',
+        bottomNavigationBar: Container(
+          color: Theme.of(context).primaryColor,
+          child: Container(
+            child: TabBar(
+              tabs: <Widget>[
+                Tab(
+                  icon: Icon(Icons.gps_fixed),
+                  text: 'Todos',
+                ),
+                Tab(
+                  icon: Icon(Icons.add),
+                  text: 'Agregar nuevo',
+                )
+              ],
             ),
-            Tab(
-              icon: Icon(Icons.add),
-              text: 'Agregar nuevo',
-            )
-          ],
+          ),
         ),
       ),
     );

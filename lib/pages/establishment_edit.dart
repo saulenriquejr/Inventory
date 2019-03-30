@@ -21,12 +21,10 @@ class _EstablishmentEditPage extends State<EstablishmentEditPage> {
     return EnsureVisibleWhenFocused(
       focusNode: _nameFocusNode,
       child: TextFormField(
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         focusNode: _nameFocusNode,
         decoration: InputDecoration(
-            labelText: 'Nombre del lugar',
-            labelStyle:
-                TextStyle(color: Colors.white, fontWeight: FontWeight.normal)),
+          labelText: 'Nombre del lugar',
+        ),
         validator: (String value) {
           if (value.isEmpty || value.length < 5) {
             return 'Debe tener al menos 5 letras';
@@ -44,12 +42,9 @@ class _EstablishmentEditPage extends State<EstablishmentEditPage> {
     return EnsureVisibleWhenFocused(
       focusNode: _addressFocusNode,
       child: TextFormField(
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         focusNode: _addressFocusNode,
         decoration: InputDecoration(
           labelText: 'Dirección',
-          labelStyle:
-              TextStyle(color: Colors.white, fontWeight: FontWeight.normal),
         ),
         initialValue: establishment == null ? '' : establishment.address,
         onSaved: (String value) {
@@ -111,6 +106,9 @@ class _EstablishmentEditPage extends State<EstablishmentEditPage> {
             padding: EdgeInsets.symmetric(horizontal: targetPadding / 2),
             children: <Widget>[
               _buildNameTextField(establishment),
+              SizedBox(
+                height: 10.0,
+              ),
               _buildAddressTextField(establishment),
               SizedBox(
                 height: 10.0,
@@ -136,7 +134,6 @@ class _EstablishmentEditPage extends State<EstablishmentEditPage> {
               appBar: AppBar(
                 title: Text('Editar Lugar'),
               ),
-              backgroundColor: Theme.of(context).primaryColor,
               body: pageContent,
             );
     });

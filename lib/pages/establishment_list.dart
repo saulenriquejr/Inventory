@@ -10,7 +10,7 @@ class EstablishmentListPage extends StatelessWidget {
       elevation: 8.0,
       margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
       child: Container(
-        decoration: BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
+        decoration: BoxDecoration(color: Theme.of(context).accentColor),
         child: ListTile(
           contentPadding:
               EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
@@ -32,7 +32,7 @@ class EstablishmentListPage extends StatelessWidget {
           ),
           subtitle: Row(
             children: <Widget>[
-              Icon(Icons.map, color: Theme.of(context).accentColor),
+              Icon(Icons.map, color: Colors.white),
               Text(
                 model.allEstablishments[index].address,
                 style: TextStyle(color: Colors.white, fontFamily: 'Raleway'),
@@ -75,7 +75,6 @@ class EstablishmentListPage extends StatelessWidget {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       return Scaffold(
-        backgroundColor: Theme.of(context).primaryColor,
         body: buildBody(context, model),
       );
     });
