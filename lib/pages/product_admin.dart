@@ -26,7 +26,7 @@ class ProductAdminPage extends StatelessWidget {
             child: TabBar(
               tabs: <Widget>[
                 Tab(
-                  icon: Icon(Icons.gps_fixed),
+                  icon: Icon(Icons.list),
                   text: 'Todos',
                 ),
                 Tab(
