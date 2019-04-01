@@ -1,6 +1,6 @@
 import 'package:scoped_model/scoped_model.dart';
 import './connected_inventory.dart';
 
-class MainModel extends Model with ConnectedInventoryModel, EstablishmentsModel, ProductsModel {
+class MainModel extends Model with ConnectedInventoryModel, PlacesModel, ProductsModel {
 
 }

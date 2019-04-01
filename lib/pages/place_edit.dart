@@ -3,21 +3,21 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:Inventarios/widgets/helpers/ensure_visible.dart';
 
 import 'package:Inventarios/scoped_models/main.dart';
-import 'package:Inventarios/models/establishment.dart';
+import 'package:Inventarios/models/place.dart';
 
-class EstablishmentEditPage extends StatefulWidget {
+class PlaceEditPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _EstablishmentEditPage();
+  State<StatefulWidget> createState() => _PlaceEditPage();
 }
 
-class _EstablishmentEditPage extends State<EstablishmentEditPage> {
-  Establishment _formData = new Establishment();
+class _PlaceEditPage extends State<PlaceEditPage> {
+  Place _formData = new Place();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final _nameFocusNode = FocusNode();
   final _addressFocusNode = FocusNode();
 
-  Widget _buildNameTextField(Establishment establishment) {
+  Widget _buildNameTextField(Place place) {
     return EnsureVisibleWhenFocused(
       focusNode: _nameFocusNode,
       child: TextFormField(
@@ -30,7 +30,7 @@ class _EstablishmentEditPage extends State<EstablishmentEditPage> {
             return 'Debe tener al menos 5 letras';
           }
         },
-        initialValue: establishment == null ? '' : establishment.name,
+        initialValue: place == null ? '' : place.name,
         onSaved: (String value) {
           _formData.name = value;
         },
@@ -38,7 +38,7 @@ class _EstablishmentEditPage extends State<EstablishmentEditPage> {
     );
   }
 
-  Widget _buildAddressTextField(Establishment establishment) {
+  Widget _buildAddressTextField(Place place) {
     return EnsureVisibleWhenFocused(
       focusNode: _addressFocusNode,
       child: TextFormField(
@@ -46,7 +46,7 @@ class _EstablishmentEditPage extends State<EstablishmentEditPage> {
         decoration: InputDecoration(
           labelText: 'Dirección',
         ),
-        initialValue: establishment == null ? '' : establishment.address,
+        initialValue: place == null ? '' : place.address,
         onSaved: (String value) {
           _formData.address = value;
         },
@@ -54,22 +54,22 @@ class _EstablishmentEditPage extends State<EstablishmentEditPage> {
     );
   }
 
-  void _submitForm(Function addEstablishment, Function updateEstablishment,
-      Function setSelectedEstablishment,
-      [int selEstablishmentIndex]) {
+  void _submitForm(Function addPlace, Function updatePlace,
+      Function setSelectedPlace,
+      [int selPlaceIndex]) {
     if (!_formKey.currentState.validate()) {
       return;
     }
     _formKey.currentState.save();
 
-    if (selEstablishmentIndex == null) {
-      addEstablishment(_formData.name, _formData.address);
+    if (selPlaceIndex == null) {
+      addPlace(_formData.name, _formData.address);
     } else {
-      updateEstablishment(_formData.name, _formData.address);
+      updatePlace(_formData.name, _formData.address);
     }
 
-    Navigator.pushReplacementNamed(context, '/establishments')
-        .then((_) => setSelectedEstablishment(null));
+    Navigator.pushReplacementNamed(context, '/places')
+        .then((_) => setSelectedPlace(null));
   }
 
   Widget _buildSubmitButton() {
@@ -80,16 +80,16 @@ class _EstablishmentEditPage extends State<EstablishmentEditPage> {
           textColor: Colors.white,
           color: Theme.of(context).accentColor,
           onPressed: () => _submitForm(
-              model.addEstablishment,
-              model.updateEstablishment,
-              model.setSelectedEstablishment,
-              model.selEstablishmentIndex),
+              model.addPlace,
+              model.updatePlace,
+              model.setSelectedPlace,
+              model.selPlaceIndex),
         );
       },
     );
   }
 
-  Widget _buildPageContent(BuildContext context, Establishment establishment) {
+  Widget _buildPageContent(BuildContext context, Place place) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
     final double targetPadding = deviceWidth - targetWidth;
@@ -105,11 +105,11 @@ class _EstablishmentEditPage extends State<EstablishmentEditPage> {
           child: ListView(
             padding: EdgeInsets.symmetric(horizontal: targetPadding / 2),
             children: <Widget>[
-              _buildNameTextField(establishment),
+              _buildNameTextField(place),
               SizedBox(
                 height: 10.0,
               ),
-              _buildAddressTextField(establishment),
+              _buildAddressTextField(place),
               SizedBox(
                 height: 10.0,
               ),
@@ -126,9 +126,9 @@ class _EstablishmentEditPage extends State<EstablishmentEditPage> {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       Widget pageContent =
-          _buildPageContent(context, model.selectedEstablishment);
+          _buildPageContent(context, model.selectedPlace);
 
-      return model.selectedEstablishmentIndex == null
+      return model.selectedPlaceIndex == null
           ? pageContent
           : Scaffold(
               appBar: AppBar(

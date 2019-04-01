@@ -32,11 +32,10 @@ class ProductListPage extends StatelessWidget {
           ),
           subtitle: Row(
             children: <Widget>[
-              Icon(Icons.map, color: Theme.of(context).accentColor),
               Text(
                 model.allProducts[index].description,
                 style: TextStyle(color: Colors.white, fontFamily: 'Raleway'),
-              )
+              ),
             ],
           ),
           trailing: IconButton(

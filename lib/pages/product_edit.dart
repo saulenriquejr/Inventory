@@ -107,10 +107,10 @@ class _ProductEditPage extends State<ProductEditPage> {
 
     if (selProductIndex == null) {
       addProduct(_productFormData.name, _productFormData.description,
-          _productFormData.imageUrl);
+          _productFormData.imageUrl, _productFormData.category);
     } else {
       updateProduct(_productFormData.name, _productFormData.description,
-          _productFormData.imageUrl);
+          _productFormData.imageUrl, _productFormData.category);
     }
 
     Navigator.pushReplacementNamed(context, '/products')
@@ -156,18 +156,19 @@ class _ProductEditPage extends State<ProductEditPage> {
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
-        builder: (BuildContext context, Widget child, MainModel model) {
-      Widget pageContent = _buildPageContent(context, model.selectedProduct);
+      builder: (BuildContext context, Widget child, MainModel model) {
+        Widget pageContent = _buildPageContent(context, model.selectedProduct);
 
-      return model.selectedProductIndex == null
-          ? pageContent
-          : Scaffold(
-              appBar: AppBar(
-                title: Text('Editar Producto'),
-              ),
-              backgroundColor: Theme.of(context).primaryColor,
-              body: pageContent,
-            );
-    });
+        return model.selectedProductIndex == null
+            ? pageContent
+            : Scaffold(
+                appBar: AppBar(
+                  title: Text('Editar Producto'),
+                ),
+                //backgroundColor: Theme.of(context).primaryColor,
+                body: pageContent,
+              );
+      },
+    );
   }
 }

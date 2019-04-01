@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import 'package:Inventarios/pages/establishment_edit.dart';
 import 'package:Inventarios/scoped_models/main.dart';
+import 'package:Inventarios/pages/place_edit.dart';
 
-class EstablishmentListPage extends StatelessWidget {
+class PlaceListPage extends StatelessWidget {
   Widget buildCard(BuildContext context, int index, MainModel model) {
     return Card(
       elevation: 8.0,
@@ -24,7 +24,7 @@ class EstablishmentListPage extends StatelessWidget {
             child: Icon(Icons.home, color: Colors.white),
           ),
           title: Text(
-            model.allEstablishments[index].name,
+            model.allPlaces[index].name,
             style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -34,7 +34,7 @@ class EstablishmentListPage extends StatelessWidget {
             children: <Widget>[
               Icon(Icons.map, color: Colors.white),
               Text(
-                model.allEstablishments[index].address,
+                model.allPlaces[index].address,
                 style: TextStyle(color: Colors.white, fontFamily: 'Raleway'),
               )
             ],
@@ -42,11 +42,11 @@ class EstablishmentListPage extends StatelessWidget {
           trailing: IconButton(
             icon: Icon(Icons.edit, color: Colors.white, size: 30.0),
             onPressed: () {
-              model.setSelectedEstablishment(index);
+              model.setSelectedPlace(index);
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (BuildContext context) {
-                    return EstablishmentEditPage();
+                    return PlaceEditPage();
                   },
                 ),
               );
@@ -62,7 +62,7 @@ class EstablishmentListPage extends StatelessWidget {
       child: ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
-        itemCount: model.allEstablishments.length,
+        itemCount: model.allPlaces.length,
         itemBuilder: (BuildContext context, int index) {
           return buildCard(context, index, model);
         },

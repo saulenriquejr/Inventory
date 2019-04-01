@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import './pages/establishment_admin.dart';
 import 'package:Inventarios/scoped_models/main.dart';
+import 'package:Inventarios/pages/place_admin.dart';
 import 'package:Inventarios/pages/product_admin.dart';
 
 void main() => runApp(App());
@@ -27,9 +27,9 @@ class _MyAppState extends State<App> {
             buttonColor: Colors.deepPurple
           ),
           routes: {
-            '/': (BuildContext context) => EstablishmentAdminPage(),
-            '/establishments': (BuildContext context) =>
-                EstablishmentAdminPage(),
+            '/': (BuildContext context) => PlaceAdminPage(),
+            '/places': (BuildContext context) =>
+                PlaceAdminPage(),
             '/products': (BuildContext context) => ProductAdminPage()
           },
         ));

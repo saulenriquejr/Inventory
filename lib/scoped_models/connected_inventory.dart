@@ -1,55 +1,55 @@
 import 'package:scoped_model/scoped_model.dart';
 
 import 'package:Inventarios/models/product.dart';
-import 'package:Inventarios/models/establishment.dart';
+import 'package:Inventarios/models/place.dart';
 
 mixin ConnectedInventoryModel on Model {
-  List<Establishment> _establishments = [];
-  List<Product> _productsx = [];
-  int selEstablishmentIndex;
+  List<Place> _places = [];
+  List<Product> _products = [];
+  int selPlaceIndex;
   int selProductIndex;
 }
 
-mixin EstablishmentsModel on ConnectedInventoryModel {
-  List<Establishment> get allEstablishments {
-    return List.from(_establishments);
+mixin PlacesModel on ConnectedInventoryModel {
+  List<Place> get allPlaces {
+    return List.from(_places);
   }
 
-  int get selectedEstablishmentIndex {
-    return selEstablishmentIndex;
+  int get selectedPlaceIndex {
+    return selPlaceIndex;
   }
 
-  void setSelectedEstablishment(int index) {
-    selEstablishmentIndex = index;
+  void setSelectedPlace(int index) {
+    selPlaceIndex = index;
     notifyListeners();
   }
 
-  Establishment get selectedEstablishment {
-    if (selectedEstablishmentIndex == null) {
+  Place get selectedPlace {
+    if (selectedPlaceIndex == null) {
       return null;
     }
-    return _establishments[selectedEstablishmentIndex];
+    return _places[selectedPlaceIndex];
   }
 
-  void addEstablishment(String name, String address) {
-    final Establishment newEstablishment =
-        Establishment(name: name, address: address);
-    _establishments.add(newEstablishment);
+  void addPlace(String name, String address) {
+    final Place newPlace =
+        Place(name: name, address: address);
+    _places.add(newPlace);
     notifyListeners();
   }
 
-  void updateEstablishment(String name, String address) {
-    final Establishment updatedEstablishment =
-        Establishment(name: name, address: address);
+  void updatePlace(String name, String address) {
+    final Place updatedPlace =
+        Place(name: name, address: address);
 
-    _establishments[selEstablishmentIndex] = updatedEstablishment;
+    _places[selPlaceIndex] = updatedPlace;
     notifyListeners();
   }
 }
 
 mixin ProductsModel on ConnectedInventoryModel {
   List<Product> get allProducts {
-    return List.from(_productsx);
+    return List.from(_products);
   }
 
   int get selectedProductIndex {
@@ -60,21 +60,21 @@ mixin ProductsModel on ConnectedInventoryModel {
     if (selectedProductIndex == null) {
       return null;
     }
-    return _productsx[selectedProductIndex];
+    return _products[selectedProductIndex];
   }
 
-  void addProduct(String name, String description, String imageUrl) {
+  void addProduct(String name, String description, String imageUrl, String category) {
     final Product newProduct =
-        Product(name: name, description: description, imageUrl: imageUrl);
-    _productsx.add(newProduct);
+        Product(name: name, description: description, imageUrl: imageUrl, category: category);
+    _products.add(newProduct);
     notifyListeners();
   }
 
-  void updateProduct(String name, String description, String imageUrl) {
+  void updateProduct(String name, String description, String imageUrl, String category) {
     final Product updatedProduct =
-        Product(name: name, description: description, imageUrl: imageUrl);
+        Product(name: name, description: description, imageUrl: imageUrl, category: category);
 
-    _productsx[selProductIndex] = updatedProduct;
+    _products[selProductIndex] = updatedProduct;
     notifyListeners();
   }
 

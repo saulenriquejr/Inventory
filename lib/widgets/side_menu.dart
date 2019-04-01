@@ -14,7 +14,7 @@ class SideMenu extends StatelessWidget {
             leading: Icon(Icons.gps_fixed),
             title: Text('Lugares'),
             onTap: () {
-              Navigator.pushReplacementNamed(context, '/establishments');
+              Navigator.pushReplacementNamed(context, '/places');
             },
           ),
           ListTile(

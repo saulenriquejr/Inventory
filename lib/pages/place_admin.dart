@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:Inventarios/pages/establishment_edit.dart';
-import 'package:Inventarios/pages/establishment_list.dart';
 import 'package:Inventarios/widgets/side_menu.dart';
+import 'package:Inventarios/pages/place_edit.dart';
+import 'package:Inventarios/pages/place_list.dart';
 
-class EstablishmentAdminPage extends StatelessWidget {
+class PlaceAdminPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final topAppBar = AppBar(
@@ -18,7 +18,10 @@ class EstablishmentAdminPage extends StatelessWidget {
         drawer: SideMenu(),
         appBar: topAppBar,
         body: TabBarView(
-          children: <Widget>[EstablishmentListPage(), EstablishmentEditPage()],
+          children: <Widget>[
+            PlaceListPage(),
+            PlaceEditPage(),
+          ],
         ),
         bottomNavigationBar: Container(
           color: Theme.of(context).primaryColor,
