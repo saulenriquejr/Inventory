@@ -30,9 +30,9 @@ class _PlaceEditPage extends State<PlaceEditPage> {
             return 'Debe tener al menos 5 letras';
           }
         },
-        initialValue: place == null ? '' : place.name,
+        initialValue: place == null ? '' : place.title,
         onSaved: (String value) {
-          _formData.name = value;
+          _formData.title = value;
         },
       ),
     );
@@ -54,8 +54,8 @@ class _PlaceEditPage extends State<PlaceEditPage> {
     );
   }
 
-  void _submitForm(Function addPlace, Function updatePlace,
-      Function setSelectedPlace,
+  void _submitForm(
+      Function addPlace, Function updatePlace, Function setSelectedPlace,
       [int selPlaceIndex]) {
     if (!_formKey.currentState.validate()) {
       return;
@@ -63,13 +63,18 @@ class _PlaceEditPage extends State<PlaceEditPage> {
     _formKey.currentState.save();
 
     if (selPlaceIndex == null) {
-      addPlace(_formData.name, _formData.address);
+      addPlace(
+        _formData.title,
+        _formData.address,
+      ).then((_) => Navigator.pushReplacementNamed(context, '/places')
+          .then((_) => setSelectedPlace(null)));
     } else {
-      updatePlace(_formData.name, _formData.address);
+      updatePlace(
+        _formData.title,
+        _formData.address,
+      ).then((_) => Navigator.pushReplacementNamed(context, '/places')
+          .then((_) => setSelectedPlace(null)));
     }
-
-    Navigator.pushReplacementNamed(context, '/places')
-        .then((_) => setSelectedPlace(null));
   }
 
   Widget _buildSubmitButton() {
@@ -79,11 +84,8 @@ class _PlaceEditPage extends State<PlaceEditPage> {
           child: Text('Guardar'),
           textColor: Colors.white,
           color: Theme.of(context).accentColor,
-          onPressed: () => _submitForm(
-              model.addPlace,
-              model.updatePlace,
-              model.setSelectedPlace,
-              model.selPlaceIndex),
+          onPressed: () => _submitForm(model.addPlace, model.updatePlace,
+              model.setSelectedPlace, model.selPlaceIndex),
         );
       },
     );
@@ -125,8 +127,7 @@ class _PlaceEditPage extends State<PlaceEditPage> {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-      Widget pageContent =
-          _buildPageContent(context, model.selectedPlace);
+      Widget pageContent = _buildPageContent(context, model.selectedPlace);
 
       return model.selectedPlaceIndex == null
           ? pageContent

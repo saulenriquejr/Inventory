@@ -1,6 +1,7 @@
 class Place {
-  String name;
+  String id;
+  String title;
   String address;
 
-  Place({this.address, this.name});
+  Place({this.id, this.address, this.title});
 }

@@ -24,7 +24,7 @@ class PlaceListPage extends StatelessWidget {
             child: Icon(Icons.home, color: Colors.white),
           ),
           title: Text(
-            model.allPlaces[index].name,
+            model.allPlaces[index].title,
             style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
