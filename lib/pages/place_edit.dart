@@ -62,7 +62,7 @@ class _PlaceEditPage extends State<PlaceEditPage> {
     }
     _formKey.currentState.save();
 
-    if (selPlaceIndex == null) {
+    if (selPlaceIndex == -1) {
       addPlace(
         _formData.title,
         _formData.address,
@@ -85,7 +85,7 @@ class _PlaceEditPage extends State<PlaceEditPage> {
           textColor: Colors.white,
           color: Theme.of(context).accentColor,
           onPressed: () => _submitForm(model.addPlace, model.updatePlace,
-              model.setSelectedPlace, model.selPlaceIndex),
+              model.setSelectedPlace, model.selectedPlaceIndex),
         );
       },
     );

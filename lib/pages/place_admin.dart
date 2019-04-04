@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 
+import 'package:Inventarios/scoped_models/main.dart';
 import 'package:Inventarios/widgets/side_menu.dart';
 import 'package:Inventarios/pages/place_edit.dart';
 import 'package:Inventarios/pages/place_list.dart';
 
 class PlaceAdminPage extends StatelessWidget {
+  final MainModel model;
+
+  PlaceAdminPage(this.model);
+
   @override
   Widget build(BuildContext context) {
     final topAppBar = AppBar(
@@ -19,7 +24,7 @@ class PlaceAdminPage extends StatelessWidget {
         appBar: topAppBar,
         body: TabBarView(
           children: <Widget>[
-            PlaceListPage(),
+            PlaceListPage(model),
             PlaceEditPage(),
           ],
         ),

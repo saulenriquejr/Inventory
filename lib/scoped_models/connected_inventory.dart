@@ -1,15 +1,14 @@
 import 'dart:convert';
-
-import 'package:scoped_model/scoped_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:scoped_model/scoped_model.dart';
 
-import 'package:Inventarios/models/product.dart';
 import 'package:Inventarios/models/place.dart';
+import 'package:Inventarios/models/product.dart';
 
 mixin ConnectedInventoryModel on Model {
   List<Place> _places = [];
   List<Product> _products = [];
-  int selPlaceIndex;
+  String _selPlaceId;
   int selProductIndex;
   bool _isLoading = false;
 }
@@ -20,23 +19,54 @@ mixin PlacesModel on ConnectedInventoryModel {
   }
 
   int get selectedPlaceIndex {
-    return selPlaceIndex;
+    return _places.indexWhere((Place place) {
+      return place.id == _selPlaceId;
+    });
   }
 
-  void setSelectedPlace(int index) {
-    selPlaceIndex = index;
+  void setSelectedPlace(String index) {
+    _selPlaceId = index;
     notifyListeners();
   }
 
   Place get selectedPlace {
-    if (selectedPlaceIndex == null) {
+    if (selectedPlaceIndex == -1) {
       return null;
     }
-    return _places[selectedPlaceIndex];
+    return _places.firstWhere((Place place) {
+      return place.id == _selPlaceId;
+    });
+  }
+
+  Future<Null> fetchPlaces() {
+    _isLoading = true;
+    return http
+        .get('https://iventory-9a893.firebaseio.com/places.json')
+        .then((http.Response response) {
+      final List<Place> fetchedPlaceList = [];
+      final Map<String, dynamic> placeListData = json.decode(response.body);
+      if (placeListData == null) {
+        _isLoading = false;
+        notifyListeners();
+        return;
+      }
+      placeListData.forEach((String placeId, dynamic placeData) {
+        final Place place = Place(
+          id: placeId,
+          title: placeData['title'],
+          address: placeData['address'],
+        );
+        fetchedPlaceList.add(place);
+      });
+      _places = fetchedPlaceList;
+      _isLoading = false;
+      notifyListeners();
+      _selPlaceId = null;
+    });
   }
 
   Future<Null> addPlace(String title, String address) {
-    final Map<String, dynamic> placeData = {'name': title, 'address': address};
+    final Map<String, dynamic> placeData = {'title': title, 'address': address};
 
     _isLoading = true;
     notifyListeners();
@@ -47,7 +77,7 @@ mixin PlacesModel on ConnectedInventoryModel {
       body: json.encode(placeData),
     )
         .then((http.Response response) {
-          print(response.body);
+      print(response.body);
       final Map<String, dynamic> responseData = json.decode(response.body);
       final Place newPlace = Place(
         id: responseData['name'],
@@ -61,10 +91,10 @@ mixin PlacesModel on ConnectedInventoryModel {
   }
 
   void updatePlace(String name, String address) {
-    final Place updatedPlace = Place(title: name, address: address);
+    // final Place updatedPlace = Place(title: name, address: address);
 
-    _places[selPlaceIndex] = updatedPlace;
-    notifyListeners();
+    // _places[_selPlaceIndex] = updatedPlace;
+    // notifyListeners();
   }
 }
 

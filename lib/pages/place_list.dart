@@ -4,7 +4,24 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:Inventarios/scoped_models/main.dart';
 import 'package:Inventarios/pages/place_edit.dart';
 
-class PlaceListPage extends StatelessWidget {
+class PlaceListPage extends StatefulWidget {
+  final MainModel model;
+
+  PlaceListPage(this.model);
+
+  @override
+  State<StatefulWidget> createState() {
+    return _PlaceListPageState();
+  }
+}
+
+class _PlaceListPageState extends State<PlaceListPage> {
+  @override
+  initState() {
+    widget.model.fetchPlaces();
+    super.initState();
+  }
+
   Widget buildCard(BuildContext context, int index, MainModel model) {
     return Card(
       elevation: 8.0,
@@ -42,7 +59,7 @@ class PlaceListPage extends StatelessWidget {
           trailing: IconButton(
             icon: Icon(Icons.edit, color: Colors.white, size: 30.0),
             onPressed: () {
-              model.setSelectedPlace(index);
+              model.setSelectedPlace(model.allPlaces[index].id);
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (BuildContext context) {

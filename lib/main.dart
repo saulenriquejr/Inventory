@@ -17,19 +17,18 @@ class App extends StatefulWidget {
 class _MyAppState extends State<App> {
   @override
   Widget build(BuildContext context) {
+    final MainModel model = MainModel();
     return ScopedModel<MainModel>(
-        model: MainModel(),
+        model: model,
         child: MaterialApp(
           theme: ThemeData(
-            brightness: Brightness.light,
-            primarySwatch: Colors.deepOrange,
-            accentColor: Colors.deepPurple,
-            buttonColor: Colors.deepPurple
-          ),
+              brightness: Brightness.light,
+              primarySwatch: Colors.deepOrange,
+              accentColor: Colors.deepPurple,
+              buttonColor: Colors.deepPurple),
           routes: {
-            '/': (BuildContext context) => PlaceAdminPage(),
-            '/places': (BuildContext context) =>
-                PlaceAdminPage(),
+            '/': (BuildContext context) => PlaceAdminPage(model),
+            '/places': (BuildContext context) => PlaceAdminPage(model),
             '/products': (BuildContext context) => ProductAdminPage()
           },
         ));
