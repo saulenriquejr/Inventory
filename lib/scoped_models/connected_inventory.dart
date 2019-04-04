@@ -142,3 +142,9 @@ mixin ProductsModel on ConnectedInventoryModel {
     notifyListeners();
   }
 }
+
+mixin UtilityModel on ConnectedInventoryModel {
+  bool get isLoading {
+    return _isLoading;
+  }
+}

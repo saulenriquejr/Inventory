@@ -90,10 +90,17 @@ class _PlaceListPageState extends State<PlaceListPage> {
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
-        builder: (BuildContext context, Widget child, MainModel model) {
-      return Scaffold(
-        body: buildBody(context, model),
-      );
-    });
+      builder: (BuildContext context, Widget child, MainModel model) {
+        Widget content = Center(
+          child: Text('No hay lugares registrados!'),
+        );
+        if (model.isLoading) {
+          content = Center(child: CircularProgressIndicator());
+        } else {
+          content = buildBody(context, model);
+        }
+        return RefreshIndicator(onRefresh: model.fetchPlaces, child: content);
+      },
+    );
   }
 }
