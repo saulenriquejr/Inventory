@@ -14,14 +14,14 @@ class _ProductEditPage extends State<ProductEditPage> {
   Product _productFormData = new Product();
   final GlobalKey<FormState> _productFormKey = GlobalKey<FormState>();
 
-  final _productNameFocusNode = FocusNode();
-  final _productDescriptionFocusNode = FocusNode();
+  final _nameFocusNode = FocusNode();
+  final _descriptionFocusNode = FocusNode();
 
   Widget _buildNameTextField(Product product) {
     return EnsureVisibleWhenFocused(
-      focusNode: _productNameFocusNode,
+      focusNode: _nameFocusNode,
       child: TextFormField(
-        focusNode: _productNameFocusNode,
+        focusNode: _nameFocusNode,
         decoration: InputDecoration(
           labelText: 'Nombre',
         ),
@@ -30,9 +30,9 @@ class _ProductEditPage extends State<ProductEditPage> {
             return 'Debe tener al menos 3 letras';
           }
         },
-        initialValue: product == null ? '' : product.name,
+        initialValue: product == null ? '' : product.title,
         onSaved: (String value) {
-          _productFormData.name = value;
+          _productFormData.title = value;
         },
       ),
     );
@@ -40,9 +40,9 @@ class _ProductEditPage extends State<ProductEditPage> {
 
   Widget _buildDescripionTextField(Product product) {
     return EnsureVisibleWhenFocused(
-      focusNode: _productDescriptionFocusNode,
+      focusNode: _descriptionFocusNode,
       child: TextFormField(
-        focusNode: _productDescriptionFocusNode,
+        focusNode: _descriptionFocusNode,
         decoration: InputDecoration(
           labelText: 'Descripción',
         ),
@@ -106,10 +106,10 @@ class _ProductEditPage extends State<ProductEditPage> {
     _productFormKey.currentState.save();
 
     if (selProductIndex == null) {
-      addProduct(_productFormData.name, _productFormData.description,
+      addProduct(_productFormData.title, _productFormData.description,
           _productFormData.imageUrl, _productFormData.category);
     } else {
-      updateProduct(_productFormData.name, _productFormData.description,
+      updateProduct(_productFormData.title, _productFormData.description,
           _productFormData.imageUrl, _productFormData.category);
     }
 

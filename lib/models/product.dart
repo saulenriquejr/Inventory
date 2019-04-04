@@ -1,8 +1,9 @@
 class Product {
-  String name;
+  String id;
+  String title;
   String description;
   String imageUrl;
   String category;
 
-  Product({this.name, this.description, this.category, this.imageUrl});
+  Product({this.title, this.description, this.category, this.imageUrl, this.id});
 }

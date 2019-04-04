@@ -4,7 +4,18 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:Inventarios/pages/product_edit.dart';
 import 'package:Inventarios/scoped_models/main.dart';
 
-class ProductListPage extends StatelessWidget {
+class ProductListPage extends StatefulWidget {
+  final MainModel model;
+
+  ProductListPage(this.model);
+
+  @override
+  State<StatefulWidget> createState() {
+    return _ProductListPageState();
+  }
+}
+
+class _ProductListPageState extends State<ProductListPage> {
   Widget buildCard(BuildContext context, int index, MainModel model) {
     return Card(
       elevation: 8.0,
@@ -24,7 +35,7 @@ class ProductListPage extends StatelessWidget {
             child: Icon(Icons.library_books, color: Colors.white),
           ),
           title: Text(
-            model.allProducts[index].name,
+            model.allProducts[index].title,
             style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,

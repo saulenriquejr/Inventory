@@ -29,7 +29,7 @@ class _MyAppState extends State<App> {
           routes: {
             '/': (BuildContext context) => PlaceAdminPage(model),
             '/places': (BuildContext context) => PlaceAdminPage(model),
-            '/products': (BuildContext context) => ProductAdminPage()
+            '/products': (BuildContext context) => ProductAdminPage(model)
           },
         ));
   }

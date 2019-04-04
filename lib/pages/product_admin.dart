@@ -1,3 +1,4 @@
+import 'package:Inventarios/scoped_models/main.dart';
 import 'package:flutter/material.dart';
 
 import 'package:Inventarios/pages/product_edit.dart';
@@ -5,6 +6,10 @@ import 'package:Inventarios/pages/product_list.dart';
 import 'package:Inventarios/widgets/side_menu.dart';
 
 class ProductAdminPage extends StatelessWidget {
+  final MainModel model;
+
+  ProductAdminPage(this.model);
+
   @override
   Widget build(BuildContext context) {
     final topAppBar = AppBar(
@@ -18,7 +23,10 @@ class ProductAdminPage extends StatelessWidget {
         drawer: SideMenu(),
         appBar: topAppBar,
         body: TabBarView(
-          children: <Widget>[ProductListPage(), ProductEditPage()],
+          children: <Widget>[
+            ProductListPage(model),
+            ProductEditPage(),
+          ],
         ),
         bottomNavigationBar: Container(
           color: Theme.of(context).primaryColor,

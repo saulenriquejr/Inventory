@@ -9,6 +9,7 @@ mixin ConnectedInventoryModel on Model {
   List<Place> _places = [];
   List<Product> _products = [];
   String _selPlaceId;
+  String _selProductId;
   int selProductIndex;
   bool _isLoading = false;
 }
@@ -72,22 +73,21 @@ mixin PlacesModel on ConnectedInventoryModel {
     notifyListeners();
 
     return http
-        .post(
-      'https://iventory-9a893.firebaseio.com/places.json',
-      body: json.encode(placeData),
-    )
-        .then((http.Response response) {
-      print(response.body);
-      final Map<String, dynamic> responseData = json.decode(response.body);
-      final Place newPlace = Place(
-        id: responseData['name'],
-        title: title,
-        address: address,
-      );
-      _places.add(newPlace);
-      _isLoading = false;
-      notifyListeners();
-    });
+        .post('https://iventory-9a893.firebaseio.com/places.json',
+            body: json.encode(placeData))
+        .then(
+      (http.Response response) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        final Place newPlace = Place(
+          id: responseData['name'],
+          title: title,
+          address: address,
+        );
+        _places.add(newPlace);
+        _isLoading = false;
+        notifyListeners();
+      },
+    );
   }
 
   void updatePlace(String name, String address) {
@@ -114,27 +114,78 @@ mixin ProductsModel on ConnectedInventoryModel {
     return _products[selectedProductIndex];
   }
 
-  void addProduct(
-      String name, String description, String imageUrl, String category) {
-    final Product newProduct = Product(
-        name: name,
-        description: description,
-        imageUrl: imageUrl,
-        category: category);
-    _products.add(newProduct);
+  Future<Null> addProduct(
+      String title, String description, String imageUrl, String category) {
+    final Map<String, dynamic> productData = {
+      'title:': title,
+      'description': description,
+      'imageUrl': imageUrl,
+      'category': category
+    };
+    _isLoading = true;
     notifyListeners();
+
+    return http
+        .post('https://iventory-9a893.firebaseio.com/products.json',
+            body: json.encode(productData))
+        .then(
+      (http.Response response) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        final Product newProduct = Product(
+            id: responseData['name'],
+            title: title,
+            category: category,
+            description: description,
+            imageUrl: imageUrl);
+
+        _products.add(newProduct);
+        _isLoading = false;
+        notifyListeners();
+      },
+    );
+  }
+
+  Future<Null> fetchProducts() {
+    _isLoading = true;
+
+    return http
+        .get('https://iventory-9a893.firebaseio.com/products.json')
+        .then((http.Response response) {
+      final List<Product> fetchedProductList = [];
+      final Map<String, dynamic> productListData = json.decode(response.body);
+      if (productListData == null) {
+        _isLoading = false;
+        notifyListeners();
+        return;
+      }
+
+      productListData.forEach((String productId, dynamic productData) {
+        final Product product = Product(
+          id: productListData['name'],
+          title: productListData['title'],
+          description: productListData['description'],
+          category: productListData['category'],
+          imageUrl: productListData['imageurl'],
+        );
+        fetchedProductList.add(product);
+      });
+      _products = fetchedProductList;
+      _isLoading = false;
+      notifyListeners();
+      _selProductId = null;
+    });
   }
 
   void updateProduct(
       String name, String description, String imageUrl, String category) {
-    final Product updatedProduct = Product(
-        name: name,
-        description: description,
-        imageUrl: imageUrl,
-        category: category);
+    // final Product updatedProduct = Product(
+    //     title: name,
+    //     description: description,
+    //     imageUrl: imageUrl,
+    //     category: category);
 
-    _products[selProductIndex] = updatedProduct;
-    notifyListeners();
+    // _products[selProductIndex] = updatedProduct;
+    // notifyListeners();
   }
 
   void setSelectedProduct(int index) {
