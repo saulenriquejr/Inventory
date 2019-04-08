@@ -25,7 +25,7 @@ class _ProductListPageState extends State<ProductListPage> {
   Widget buildCard(BuildContext context, int index, MainModel model) {
     return Card(
       elevation: 8.0,
-      margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+      margin: new EdgeInsets.symmetric(horizontal: 2.0, vertical: 2.0),
       child: Container(
         decoration: BoxDecoration(color: Theme.of(context).accentColor),
         child: ListTile(
@@ -58,7 +58,7 @@ class _ProductListPageState extends State<ProductListPage> {
           trailing: IconButton(
             icon: Icon(Icons.edit, color: Colors.white, size: 30.0),
             onPressed: () {
-              model.setSelectedProduct(index);
+              model.setSelectedProduct(model.allProducts[index].id);
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (BuildContext context) {

@@ -10,7 +10,6 @@ mixin ConnectedInventoryModel on Model {
   List<Product> _products = [];
   String _selPlaceId;
   String _selProductId;
-  int selProductIndex;
   bool _isLoading = false;
 }
 
@@ -25,11 +24,6 @@ mixin PlacesModel on ConnectedInventoryModel {
     });
   }
 
-  void setSelectedPlace(String index) {
-    _selPlaceId = index;
-    notifyListeners();
-  }
-
   Place get selectedPlace {
     if (selectedPlaceIndex == -1) {
       return null;
@@ -37,6 +31,38 @@ mixin PlacesModel on ConnectedInventoryModel {
     return _places.firstWhere((Place place) {
       return place.id == _selPlaceId;
     });
+  }
+
+  void setSelectedPlace(String index) {
+    _selPlaceId = index;
+    notifyListeners();
+  }
+
+  Future<Null> addPlace(String title, String address) {
+    final Map<String, dynamic> placeData = {
+      'title': title,
+      'address': address,
+    };
+
+    _isLoading = true;
+    notifyListeners();
+
+    return http
+        .post('https://iventory-9a893.firebaseio.com/places.json',
+            body: json.encode(placeData))
+        .then(
+      (http.Response response) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        final Place newPlace = Place(
+          id: responseData['name'],
+          title: title,
+          address: address,
+        );
+        _places.add(newPlace);
+        _isLoading = false;
+        notifyListeners();
+      },
+    );
   }
 
   Future<Null> fetchPlaces() {
@@ -66,35 +92,29 @@ mixin PlacesModel on ConnectedInventoryModel {
     });
   }
 
-  Future<Null> addPlace(String title, String address) {
-    final Map<String, dynamic> placeData = {'title': title, 'address': address};
-
+  Future<Null> updatePlace(String title, String address) {
     _isLoading = true;
     notifyListeners();
+    final Map<String, dynamic> updateData = {
+      'title': title,
+      'address': address
+    };
 
     return http
-        .post('https://iventory-9a893.firebaseio.com/places.json',
-            body: json.encode(placeData))
-        .then(
-      (http.Response response) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        final Place newPlace = Place(
-          id: responseData['name'],
-          title: title,
-          address: address,
-        );
-        _places.add(newPlace);
-        _isLoading = false;
-        notifyListeners();
-      },
-    );
-  }
+        .put(
+            'https://iventory-9a893.firebaseio.com/places/${selectedPlace.id}.json',
+            body: json.encode(updateData))
+        .then((http.Response response) {
+      _isLoading = false;
 
-  void updatePlace(String name, String address) {
-    // final Place updatedPlace = Place(title: name, address: address);
-
-    // _places[_selPlaceIndex] = updatedPlace;
-    // notifyListeners();
+      final Place updatedPlace = Place(
+        id: selectedPlace.id,
+        title: title,
+        address: address,
+      );
+      _places[selectedPlaceIndex] = updatedPlace;
+      notifyListeners();
+    });
   }
 }
 
@@ -104,7 +124,9 @@ mixin ProductsModel on ConnectedInventoryModel {
   }
 
   int get selectedProductIndex {
-    return selProductIndex;
+    return _places.indexWhere((Place place) {
+      return place.id == _selPlaceId;
+    });
   }
 
   Product get selectedProduct {
@@ -112,6 +134,11 @@ mixin ProductsModel on ConnectedInventoryModel {
       return null;
     }
     return _products[selectedProductIndex];
+  }
+
+  void setSelectedProduct(String productId) {
+    _selProductId = productId;
+    notifyListeners();
   }
 
   Future<Null> addProduct(
@@ -186,11 +213,6 @@ mixin ProductsModel on ConnectedInventoryModel {
 
     // _products[selProductIndex] = updatedProduct;
     // notifyListeners();
-  }
-
-  void setSelectedProduct(int index) {
-    selProductIndex = index;
-    notifyListeners();
   }
 }
 

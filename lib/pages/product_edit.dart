@@ -85,7 +85,7 @@ class _ProductEditPage extends State<ProductEditPage> {
           textColor: Colors.white,
           color: Theme.of(context).accentColor,
           onPressed: () => _submitForm(model.addProduct, model.updateProduct,
-              model.setSelectedProduct, model.selProductIndex),
+              model.setSelectedProduct, model.selectedProductIndex),
         );
       },
     );

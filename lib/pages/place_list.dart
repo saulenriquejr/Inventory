@@ -14,7 +14,6 @@ class PlaceListPage extends StatefulWidget {
     return _PlaceListPageState();
   }
 }
-
 class _PlaceListPageState extends State<PlaceListPage> {
   @override
   initState() {
@@ -25,7 +24,7 @@ class _PlaceListPageState extends State<PlaceListPage> {
   Widget buildCard(BuildContext context, int index, MainModel model) {
     return Card(
       elevation: 8.0,
-      margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+      margin: new EdgeInsets.symmetric(horizontal: 2.0, vertical: 2.0),
       child: Container(
         decoration: BoxDecoration(color: Theme.of(context).accentColor),
         child: ListTile(
