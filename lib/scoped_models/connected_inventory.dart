@@ -117,7 +117,7 @@ mixin ProductsModel on ConnectedInventoryModel {
   Future<Null> addProduct(
       String title, String description, String imageUrl, String category) {
     final Map<String, dynamic> productData = {
-      'title:': title,
+      'title': title,
       'description': description,
       'imageUrl': imageUrl,
       'category': category
@@ -161,11 +161,11 @@ mixin ProductsModel on ConnectedInventoryModel {
 
       productListData.forEach((String productId, dynamic productData) {
         final Product product = Product(
-          id: productListData['name'],
-          title: productListData['title'],
-          description: productListData['description'],
-          category: productListData['category'],
-          imageUrl: productListData['imageurl'],
+          id: productId,
+          title: productData['title'],
+          description: productData['description'],
+          category: productData['category'],
+          imageUrl: productData['imageurl'],
         );
         fetchedProductList.add(product);
       });

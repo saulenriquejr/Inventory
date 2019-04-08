@@ -16,6 +16,12 @@ class ProductListPage extends StatefulWidget {
 }
 
 class _ProductListPageState extends State<ProductListPage> {
+  @override
+  initState(){
+    widget.model.fetchProducts();
+    super.initState();
+  }
+
   Widget buildCard(BuildContext context, int index, MainModel model) {
     return Card(
       elevation: 8.0,
@@ -71,7 +77,6 @@ class _ProductListPageState extends State<ProductListPage> {
     return Container(
       child: ListView.builder(
         scrollDirection: Axis.vertical,
-        shrinkWrap: true,
         itemCount: model.allProducts.length,
         itemBuilder: (BuildContext context, int index) {
           return buildCard(context, index, model);
@@ -84,9 +89,16 @@ class _ProductListPageState extends State<ProductListPage> {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-      return Scaffold(
-        body: buildBody(context, model),
+      Widget content = Center(
+        child: Text('No hay productos registrados!'),
       );
+      if (model.isLoading) {
+        content = Center(child: CircularProgressIndicator());
+      } else if(model.allProducts.length > 0 && !model.isLoading) {
+        content = buildBody(context, model);
+      }
+
+      return RefreshIndicator(onRefresh: model.fetchProducts, child: content);
     });
   }
 }

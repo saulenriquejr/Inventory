@@ -105,12 +105,22 @@ class _ProductEditPage extends State<ProductEditPage> {
     }
     _productFormKey.currentState.save();
 
-    if (selProductIndex == null) {
-      addProduct(_productFormData.title, _productFormData.description,
-          _productFormData.imageUrl, _productFormData.category);
+    if (selProductIndex == -1) {
+      addProduct(
+        _productFormData.title,
+        _productFormData.description,
+        _productFormData.imageUrl,
+        _productFormData.category,
+      ).then((_) => Navigator.pushReplacementNamed(context, '/products')
+          .then((_) => setSelectedProduct(null)));
     } else {
-      updateProduct(_productFormData.title, _productFormData.description,
-          _productFormData.imageUrl, _productFormData.category);
+      updateProduct(
+        _productFormData.title,
+        _productFormData.description,
+        _productFormData.imageUrl,
+        _productFormData.category,
+      ).then((_) => Navigator.pushReplacementNamed(context, '/products')
+          .then((_) => setSelectedProduct(null)));
     }
 
     Navigator.pushReplacementNamed(context, '/products')

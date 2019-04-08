@@ -96,7 +96,7 @@ class _PlaceListPageState extends State<PlaceListPage> {
         );
         if (model.isLoading) {
           content = Center(child: CircularProgressIndicator());
-        } else {
+        } else if (model.allPlaces.length > 0 && !model.isLoading) {
           content = buildBody(context, model);
         }
         return RefreshIndicator(onRefresh: model.fetchPlaces, child: content);
